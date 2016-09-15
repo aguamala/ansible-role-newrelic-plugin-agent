@@ -14,7 +14,7 @@ services:
      - "consul:{{ ansible_default_ipv4.address }}"
     volumes:
      - ./consul-template:/etc/consul-template
-     - ./newrelic-plugin-agent.cfg:/opt/newrelic-plugin-agent/newrelic-plugin-agent.cfg
+     - ./assemble:/opt/newrelic-plugin-agent/assemble
 
 networks:
   default:
