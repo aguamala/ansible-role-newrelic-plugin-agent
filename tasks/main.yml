@@ -1,0 +1,61 @@
+---
+# tasks file for ansible-role-newrelic-plugin-agent
+
+
+- name: create assemble dir
+  file: path={{ newrelic_plugin_agent.compose_dir }}/assemble owner={{ newrelic_plugin_agent.user }} group={{ newrelic_plugin_agent.user }} state=directory
+
+- name: copy conf template
+  template: src=0_newrelic-plugin-agent.cfg dest={{ newrelic_plugin_agent.compose_dir }}/assemble/ owner={{ newrelic_plugin_agent.user }} group={{ newrelic_plugin_agent.user }}
+
+#consul-template
+- name: create consul-template conf.d dir
+  file: path="{{ newrelic_plugin_agent.compose_dir }}/consul-template/conf.d/" state=directory recurse=yes owner={{ newrelic_plugin_agent.user }} group={{ newrelic_plugin_agent.user }}
+
+- name: copy consul-template conf
+  template: src="consul-template/conf.d/config.hcl" dest="{{ newrelic_plugin_agent.compose_dir }}/consul-template/conf.d/" owner={{ newrelic_plugin_agent.user }} group={{ newrelic_plugin_agent.user }}
+  when: newrelic_plugin_agent.service_discovery.conf_file is undefined
+
+- name: copy custom consul-template conf
+  copy: src=newrelic_plugin_agent.conf_file dest=dest="{{ newrelic_plugin_agent.compose_dir }}/consul-template/conf.d/config.hcl" recurse=yes owner={{ newrelic_plugin_agent.user }} group={{ newrelic_plugin_agent.user }}
+  when: newrelic_plugin_agent.service_discovery.conf_file is defined
+
+- name: create consul-template templates dir
+  file: path="{{ newrelic_plugin_agent.compose_dir }}/consul-template/templates/" state=directory recurse=yes owner={{ newrelic_plugin_agent.user }} group={{ newrelic_plugin_agent.user }}
+
+- name: copy source template file
+  template: src="consul-template/templates/{{ item.filename }}.ctmpl" dest="{{ newrelic_plugin_agent.compose_dir }}/consul-template/templates/{{ item.dest_filename }}.ctmpl" owner={{ newrelic_plugin_agent.user }} group={{ newrelic_plugin_agent.user }}
+  with_items: "{{ newrelic_plugin_agent.consul_template.templates }}"
+  when: newrelic_plugin_agent.consul_template.templates is defined and newrelic_plugin_agent.consul_template.templates is iterable
+
+- name: copy consul-template conf file
+  template: src="consul-template/conf.d/service.hcl" dest="{{ newrelic_plugin_agent.compose_dir }}/consul-template/conf.d/{{ item.conf_dest_filename }}.hcl"  owner={{ newrelic_plugin_agent.user }} group={{ newrelic_plugin_agent.user }}
+  with_items: "{{ newrelic_plugin_agent.consul_template.templates }}"
+  when: newrelic_plugin_agent.consul_template.templates is defined and newrelic_plugin_agent.consul_template.templates is iterable
+
+- name: copy docker compose file
+  template: src=docker-compose.yml dest={{ newrelic_plugin_agent.compose_dir }}/ owner={{ newrelic_plugin_agent.user }} group={{ newrelic_plugin_agent.user }}
+
+- name: docker-compose pull
+  shell: /usr/bin/docker-compose pull chdir="{{ newrelic_plugin_agent.compose_dir }}"
+  when: newrelic_plugin_agent.pull
+  tags: docker_compose
+
+- name: docker-compose restart
+  shell: /usr/bin/docker-compose restart chdir="{{ newrelic_plugin_agent.compose_dir }}"
+  when: newrelic_plugin_agent.restart == 'yes'
+  tags: docker_compose
+
+- name: docker-compose stop
+  shell: /usr/bin/docker-compose stop chdir="{{ newrelic_plugin_agent.compose_dir }}"
+  when: newrelic_plugin_agent.stop_remove == 'yes'
+  tags: docker_compose
+
+- name: docker-compose remove
+  shell: /usr/bin/docker-compose rm -v -f chdir="{{ newrelic_plugin_agent.compose_dir }}"
+  when: newrelic_plugin_agent.stop_remove == 'yes'
+  tags: docker_compose
+
+- name: docker-compose up
+  shell: /usr/bin/docker-compose up -d chdir="{{ newrelic_plugin_agent.compose_dir }}"
+  tags: docker_compose
