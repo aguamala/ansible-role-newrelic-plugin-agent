@@ -5,8 +5,14 @@
 - name: create assemble dir
   file: path={{ newrelic_plugin_agent.compose_dir }}/assemble owner={{ newrelic_plugin_agent.user }} group={{ newrelic_plugin_agent.user }} state=directory
 
+- name: rm rf assemble files
+  shell: rm -rf {{ newrelic_plugin_agent.compose_dir }}/assemble/*
+
 - name: copy conf template
-  template: src=0_newrelic-plugin-agent.cfg dest={{ newrelic_plugin_agent.compose_dir }}/assemble/ owner={{ newrelic_plugin_agent.user }} group={{ newrelic_plugin_agent.user }}
+  template: src=a_newrelic-plugin-agent.cfg dest={{ newrelic_plugin_agent.compose_dir }}/assemble/ owner={{ newrelic_plugin_agent.user }} group={{ newrelic_plugin_agent.user }}
+
+- name: copy conf template2
+  template: src=z_newrelic-plugin-agent.cfg dest={{ newrelic_plugin_agent.compose_dir }}/assemble/ owner={{ newrelic_plugin_agent.user }} group={{ newrelic_plugin_agent.user }}
 
 #consul-template
 - name: create consul-template conf.d dir
@@ -38,7 +44,7 @@
 
 - name: docker-compose pull
   shell: /usr/bin/docker-compose pull chdir="{{ newrelic_plugin_agent.compose_dir }}"
-  when: newrelic_plugin_agent.pull
+  #when: newrelic_plugin_agent.pull
   tags: docker_compose
 
 #- name: docker-compose restart
@@ -48,12 +54,12 @@
 
 - name: docker-compose stop
   shell: /usr/bin/docker-compose stop chdir="{{ newrelic_plugin_agent.compose_dir }}"
-  when: newrelic_plugin_agent.stop_remove == 'yes'
+  #when: newrelic_plugin_agent.stop_remove == 'yes'
   tags: docker_compose
 
 - name: docker-compose remove
   shell: /usr/bin/docker-compose rm -v -f chdir="{{ newrelic_plugin_agent.compose_dir }}"
-  when: newrelic_plugin_agent.stop_remove == 'yes'
+  #when: newrelic_plugin_agent.stop_remove == 'yes'
   tags: docker_compose
 
 - name: docker-compose up
