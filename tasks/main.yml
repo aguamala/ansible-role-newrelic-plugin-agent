@@ -41,10 +41,10 @@
   when: newrelic_plugin_agent.pull
   tags: docker_compose
 
-- name: docker-compose restart
-  shell: /usr/bin/docker-compose restart chdir="{{ newrelic_plugin_agent.compose_dir }}"
-  when: newrelic_plugin_agent.restart == 'yes'
-  tags: docker_compose
+#- name: docker-compose restart
+#  shell: /usr/bin/docker-compose restart chdir="{{ newrelic_plugin_agent.compose_dir }}"
+#  when: newrelic_plugin_agent.restart == 'yes'
+#  tags: docker_compose
 
 - name: docker-compose stop
   shell: /usr/bin/docker-compose stop chdir="{{ newrelic_plugin_agent.compose_dir }}"
