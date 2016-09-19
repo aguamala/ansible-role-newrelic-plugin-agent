@@ -24,6 +24,7 @@
 #newrelic_plugin_agent_logging_requests_handlers:
 
 #newrelic_plugin_agent_user: vagrant
+#newrelic_plugin_agent_compose_dir:
 #newrelic_plugin_agent_docker_network:
 newrelic_plugin_agent_consul_template:
   templates:
@@ -40,7 +41,7 @@ newrelic_plugin_agent_consul_template:
 
 newrelic_plugin_agent:
     user: "{{ newrelic_plugin_agent_user | default('centos') }}"
-    compose_dir: "/home/{{ newrelic_plugin_agent_user | default('centos') }}/newrelic-plugin-agent"
+    compose_dir: "{{ newrelic_plugin_agent_compose_dir | default('/home/centos/newrelic-plugin-agent') }}"
     pull: False
     restart: "{{ newrelic_plugin_agent_restart | default('on-failure[10]') }}"
     stop_remove: "{{ newrelic_plugin_agent_stop_remove | default('no') }}"
