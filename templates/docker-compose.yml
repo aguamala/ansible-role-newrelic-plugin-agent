@@ -3,7 +3,7 @@ version: '2'
 services:
   #service-discovery service runs in docker1 network by default
   newrelic-plugin-agent:
-    container_name: newrelic-plugin-agent
+    container_name: {{ newrelic_plugin_agent.docker_compose_container_name | default('newrelic-plugin-agent') }}
     image: aguamala/newrelic-plugin-agent:{{ newrelic_plugin_agent.tag | default('latest') }}
     hostname: {{ hostname_replaced | default('newrelic-plugin-agent') }}
     restart: {{ newrelic_plugin_agent.docker_compose_restart_policy | default('on-failure[10]') }}
