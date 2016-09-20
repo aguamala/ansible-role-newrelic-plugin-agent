@@ -1,0 +1,9 @@
+
+  haproxy:{{ '{{' }}range service "{{ item.service }}"{{ '}}' }}
+    - name: {{ '{{' }}.Node{{ '}}' }}
+      scheme: {{ item.scheme | default('http') }}
+      host: {{ newrelic_plugin_agent_consul_template_haproxy_user }}:{{ newrelic_plugin_agent_consul_template_haproxy_password }}@{{ '{{' }}.Address{{ '}}' }}
+      verify_ssl_cert: {{ item.scheme | default('false') }}
+      port: 1936
+      path: {{ item.path | default('/haproxy?stats;csv') }}
+      {{ '{{' }}end{{ '}}' }}
