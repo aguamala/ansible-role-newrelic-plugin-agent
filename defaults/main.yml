@@ -50,3 +50,8 @@ newrelic_plugin_agent_consul_template:
       conf_dest_filename: haproxy
       service: haproxy
       command: "newrelic-plugin-agent-restart"
+    - filename: nginx
+      dest_filename: nginx
+      conf_dest_filename: nginx
+      service: nginx
+      command: "newrelic-plugin-agent-restart"
