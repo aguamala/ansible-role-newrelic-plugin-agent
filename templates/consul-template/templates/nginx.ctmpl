@@ -1,0 +1,9 @@
+
+  nginx:{{ '{{' }}range service "{{ item.service }}"{{ '}}' }}
+    - name: {{ '{{' }}.Node{{ '}}' }}
+      scheme: {{ item.scheme | default('http') }}
+      host: {{ '{{' }}.Address{{ '}}' }}
+      verify_ssl_cert: {{ item.scheme | default('false') }}
+      port: {{ '{{' }}.Port{{ '}}' }}
+      path: {{ item.path | default('/nginx_status') }}
+      {{ '{{' }}end{{ '}}' }}
