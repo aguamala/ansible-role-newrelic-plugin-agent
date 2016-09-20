@@ -3,7 +3,7 @@
     - name: {{ '{{' }}.Node{{ '}}' }}
       scheme: {{ item.scheme | default('http') }}
 {% if (newrelic_plugin_agent_consul_template_haproxy_user is defined and newrelic_plugin_agent_consul_template_haproxy_password is defined) %}
-      host: {{ newrelic_plugin_agent_consul_template_haproxy_user }}:{{ newrelic_plugin_agent_consul_template_haproxy_password }}@{{ '{{' }}.Address{{ '}}' }}
+      host: '{{ newrelic_plugin_agent_consul_template_haproxy_user }}:{{ newrelic_plugin_agent_consul_template_haproxy_password }}@{{ '{{' }}.Address{{ '}}' }}'
 {% else %}
       host: {{ '{{' }}.Address{{ '}}' }}
 {% endif %}
