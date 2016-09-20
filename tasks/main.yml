@@ -1,12 +1,11 @@
 ---
 # tasks file for ansible-role-newrelic-plugin-agent
 
+- name: rm assemble files
+  file: path={{ newrelic_plugin_agent.compose_dir }}/assemble state=absent
 
 - name: create assemble dir
   file: path={{ newrelic_plugin_agent.compose_dir }}/assemble owner={{ newrelic_plugin_agent.user }} group={{ newrelic_plugin_agent.user }} state=directory
-
-- name: rm rf assemble files
-  shell: rm -rf {{ newrelic_plugin_agent.compose_dir }}/assemble/*
 
 - name: copy conf template
   template: src=a_newrelic-plugin-agent.cfg dest={{ newrelic_plugin_agent.compose_dir }}/assemble/ owner={{ newrelic_plugin_agent.user }} group={{ newrelic_plugin_agent.user }}
@@ -15,6 +14,9 @@
   template: src=z_newrelic-plugin-agent.cfg dest={{ newrelic_plugin_agent.compose_dir }}/assemble/ owner={{ newrelic_plugin_agent.user }} group={{ newrelic_plugin_agent.user }}
 
 #consul-template
+- name: remove consul-template conf.d dir
+  file: path="{{ newrelic_plugin_agent.compose_dir }}/consul-template/conf.d" state=absent
+
 - name: create consul-template conf.d dir
   file: path="{{ newrelic_plugin_agent.compose_dir }}/consul-template/conf.d/" state=directory recurse=yes owner={{ newrelic_plugin_agent.user }} group={{ newrelic_plugin_agent.user }}
 
