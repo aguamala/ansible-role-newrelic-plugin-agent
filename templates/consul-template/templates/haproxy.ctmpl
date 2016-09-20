@@ -2,7 +2,11 @@
   haproxy:{{ '{{' }}range service "{{ item.service }}"{{ '}}' }}
     - name: {{ '{{' }}.Node{{ '}}' }}
       scheme: {{ item.scheme | default('http') }}
+{% if (newrelic_plugin_agent_consul_template_haproxy_user is defined and newrelic_plugin_agent_consul_template_haproxy_password is defined) %}
       host: {{ newrelic_plugin_agent_consul_template_haproxy_user }}:{{ newrelic_plugin_agent_consul_template_haproxy_password }}@{{ '{{' }}.Address{{ '}}' }}
+{% else %}
+      host: {{ '{{' }}.Address{{ '}}' }}
+{% endif %}
       verify_ssl_cert: {{ item.scheme | default('false') }}
       port: 1936
       path: {{ item.path | default('/haproxy?stats;csv') }}

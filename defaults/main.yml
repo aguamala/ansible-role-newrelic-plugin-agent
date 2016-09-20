@@ -42,11 +42,11 @@ newrelic_plugin_agent_consul_template:
   templates:
     - filename: apache
       dest_filename: apache
-      conf_dest_filename: apache1
+      conf_dest_filename: apache
       service: apache
       command: "newrelic-plugin-agent-restart"
-    - filename: apache
-      dest_filename: apache
-      conf_dest_filename: apache2
-      service: apache
+    - filename: haproxy
+      dest_filename: haproxy
+      conf_dest_filename: haproxy
+      service: haproxy
       command: "newrelic-plugin-agent-restart"
