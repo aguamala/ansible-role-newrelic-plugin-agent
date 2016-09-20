@@ -5,8 +5,8 @@ services:
   newrelic-plugin-agent:
     container_name: newrelic-plugin-agent
     image: aguamala/newrelic-plugin-agent:{{ newrelic_plugin_agent.tag | default('latest') }}
-    hostname: {{ hostname_replaced }}
-    restart: {{ newrelic_plugin_agent.restart }}
+    hostname: {{ hostname_replaced | default('newrelic-plugin-agent') }}
+    restart: {{ newrelic_plugin_agent.docker_compose_restart_policy | default('on-failure[10]') }}
     privileged: true
     #depends_on:
     # - consul
@@ -19,4 +19,4 @@ services:
 networks:
   default:
     external:
-      name: {{ newrelic_plugin_agent_docker_network | default('bridge') }}
+      name: {{ newrelic_plugin_agent.docker_compose_network | default('bridge') }}

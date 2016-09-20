@@ -1,57 +1,55 @@
 ---
 # defaults file for ansible-role-newrelic-plugin-agent
 
-#use ansible-vault for your key
-#newrelic_plugin_agent_license_key:
-
-#newrelic_plugin_agent_wake_interval:
-#newrelic_plugin_agent_newrelic_api_timeout:
-#newrelic_plugin_agent_proxy:
-
-#newrelic_plugin_agent_daemon_user:
-#newrelic_plugin_agent_daemon_pidfile:
-#newrelic_plugin_agent_logging_format:
-#newrelic_plugin_agent_logging_class:
-#newrelic_plugin_agent_logging_formatter:
-#newrelic_plugin_agent_logging_filename
-#newrelic_plugin_agent_logging_maxbytes
-#newrelic_plugin_agent_logging_backupcount
-#newrelic_plugin_agent_logging_level
-#newrelic_plugin_agent_logging_propagate
-#newrelic_plugin_agent_logging_handlers:
-#newrelic_plugin_agent_logging_requests_level:
-#newrelic_plugin_agent_logging_requests_propagate:
-#newrelic_plugin_agent_logging_requests_handlers:
-
-#newrelic_plugin_agent_user: vagrant
-#newrelic_plugin_agent_compose_dir:
-#newrelic_plugin_agent_docker_network:
-newrelic_plugin_agent:
-    user: "{{ newrelic_plugin_agent_user | default('centos') }}"
-    compose_dir: "{{ newrelic_plugin_agent_compose_dir | default('/home/centos/newrelic-plugin-agent') }}"
-    pull: False
-    restart: "{{ newrelic_plugin_agent_restart | default('on-failure[10]') }}"
-    stop_remove: "{{ newrelic_plugin_agent_stop_remove | default('no') }}"
-    consul_template: "{{ newrelic_plugin_agent_consul_template }}"
+#use ansible-vault for license key
+#newrelic_plugin_agent_license_key
 
 #use ansible-vault
-#newrelic_plugin_agent_consul_template_haproxy_user:
-#newrelic_plugin_agent_consul_template_haproxy_password:
+#consul_template_haproxy_user:
+#consul_template_haproxy_password:
 
-newrelic_plugin_agent_consul_template:
-  templates:
-    - filename: apache
-      dest_filename: apache
-      conf_dest_filename: apache
-      service: apache
-      command: "newrelic-plugin-agent-restart"
-    - filename: haproxy
-      dest_filename: haproxy
-      conf_dest_filename: haproxy
-      service: haproxy
-      command: "newrelic-plugin-agent-restart"
-    - filename: nginx
-      dest_filename: nginx
-      conf_dest_filename: nginx
-      service: nginx
-      command: "newrelic-plugin-agent-restart"
+newrelic_plugin_agent:
+    license_key: "{{ newrelic_plugin_agent_license_key  }}"
+    #wake_interval:
+    #api_timeout:
+    #proxy:
+    #daemon_user:
+    #daemon_pidfile:
+    #logging_format:
+    #logging_class:
+    #logging_formatter:
+    #logging_filename:
+    #logging_maxbytes:
+    #logging_backupcount:
+    #logging_level:
+    #logging_propagate:
+    #logging_handlers:
+    #logging_requests_level:
+    #logging_requests_propagate:
+    #logging_requests_handlers:
+
+    #docker_compose_user:
+    #docker_compose_dir:
+    #docker_compose_network:
+    #docker_compose_pull: False
+    #docker_compose_restart_policy:
+    #docker_compose_stop_remove: no
+    consul_template:
+      templates:
+        - filename: apache
+          dest_filename: apache
+          conf_dest_filename: apache
+          service: apache
+          command: "newrelic-plugin-agent-restart"
+        - filename: haproxy
+          dest_filename: haproxy
+          conf_dest_filename: haproxy
+          service: haproxy
+          #haproxy_user: {{ consul_template_haproxy_user }}
+          #haproxy_password: {{ consul_template_haproxy_password }}
+          command: "newrelic-plugin-agent-restart"
+        - filename: nginx
+          dest_filename: nginx
+          conf_dest_filename: nginx
+          service: nginx
+          command: "newrelic-plugin-agent-restart"

@@ -2,8 +2,8 @@
   haproxy:{{ '{{' }}range service "{{ item.service }}"{{ '}}' }}
     - name: {{ '{{' }}.Node{{ '}}' }}
       scheme: {{ item.scheme | default('http') }}
-{% if (newrelic_plugin_agent_consul_template_haproxy_user is defined and newrelic_plugin_agent_consul_template_haproxy_password is defined) %}
-      host: '{{ newrelic_plugin_agent_consul_template_haproxy_user }}:{{ newrelic_plugin_agent_consul_template_haproxy_password }}@{{ '{{' }}.Address{{ '}}' }}'
+{% if (item.haproxy_user is defined and item.haproxy_password is defined) %}
+      host: '{{ item.haproxy_user }}:{{ item.haproxy_password }}@{{ '{{' }}.Address{{ '}}' }}'
 {% else %}
       host: {{ '{{' }}.Address{{ '}}' }}
 {% endif %}
