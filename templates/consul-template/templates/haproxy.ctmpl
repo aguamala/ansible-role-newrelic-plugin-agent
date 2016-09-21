@@ -7,7 +7,7 @@
 {% else %}
       host: {{ '{{' }}.Address{{ '}}' }}
 {% endif %}
-      verify_ssl_cert: {{ item.scheme | default('false') }}
+      verify_ssl_cert: {{ item.verify_ssl_cert | default('false') }}
       port: 1936
       path: {{ item.path | default('/haproxy?stats;csv') }}
       {{ '{{' }}end{{ '}}' }}

@@ -3,7 +3,7 @@
     - name: {{ '{{' }}.Node{{ '}}' }}
       scheme: {{ item.scheme | default('http') }}
       host: {{ '{{' }}.Address{{ '}}' }}
-      verify_ssl_cert: {{ item.scheme | default('false') }}
+      verify_ssl_cert: {{ item.verify_ssl_cert | default('false') }}
       port: {{ '{{' }}.Port{{ '}}' }}
       path: {{ item.path | default('/nginx_status') }}
       {{ '{{' }}end{{ '}}' }}
