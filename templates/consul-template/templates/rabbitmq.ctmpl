@@ -3,7 +3,7 @@
   rabbitmq:{{ '{{' }}range service "{{ item.service }}"{{ '}}' }}
     name: {{ '{{' }}.Node{{ '}}' }}
     host: {{ '{{' }}.Address{{ '}}' }}
-    port: {{ '{{' }}.Port{{ '}}' }}
+    port: 15672
     verify_ssl_cert: {{ item.verify_ssl_cert | default('false') }}
     username: {{ item.username }}
     password: {{ item.password }}
