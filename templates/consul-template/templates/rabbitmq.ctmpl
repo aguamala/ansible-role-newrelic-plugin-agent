@@ -1,0 +1,18 @@
+
+
+  rabbitmq:{{ '{{' }}range service "{{ item.service }}"{{ '}}' }}
+    name: {{ '{{' }}.Node{{ '}}' }}
+    host: {{ '{{' }}.Address{{ '}}' }}
+    port: {{ '{{' }}.Port{{ '}}' }}
+    verify_ssl_cert: {{ item.verify_ssl_cert | default('false') }}
+    username: {{ item.username }}
+    password: {{ item.password }}
+{% if (item.vhosts is defined and item.vhosts is iterable) %}
+    vhosts:
+{% for vhost in item.vhosts %}
+      {{ vhost.name }}:
+{% if (vhost.queues is defined) %}
+        queues: [{{ vhost.queues }}]
+{% endif %}
+{% endfor %}
+{% endif %}
