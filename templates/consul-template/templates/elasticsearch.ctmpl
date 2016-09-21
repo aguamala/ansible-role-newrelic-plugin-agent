@@ -1,0 +1,7 @@
+
+  elasticsearch:{{ '{{' }}range service "{{ item.service }}"{{ '}}' }}
+    - name: {{ item.clustername | default('elasticsearch') }}
+      host: {{ '{{' }}.Address{{ '}}' }}
+      port: 9200
+      scheme: {{ item.scheme | default('http') }}
+      {{ '{{' }}end{{ '}}' }}
