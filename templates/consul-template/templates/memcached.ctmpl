@@ -1,0 +1,9 @@
+
+  memcached:{{ '{{' }}range service "{{ item.service }}"{{ '}}' }}
+    - name: {{ '{{' }}.Node{{ '}}' }}
+      host: {{ '{{' }}.Address{{ '}}' }}
+      port: 11211
+{% if (item.path is defined) %}
+      path: {{ item.path }}
+{% else %}
+      {{ '{{' }}end{{ '}}' }}
