@@ -1,0 +1,15 @@
+
+  redis:{{ '{{' }}range service "{{ item.service }}"{{ '}}' }}
+    - name: {{ '{{' }}.Node{{ '}}' }}
+      host: {{ '{{' }}.Address{{ '}}' }}
+      port: {{ '{{' }}.Port{{ '}}' }}
+{% if (item.db_count is defined) %}
+      db_count: {{ item.db_count }}
+{% endif %}
+{% if (item.password is defined) %}
+      password: {{ item.password }}
+{% endif %}
+{% if (item.path is defined) %}
+      path: {{ item.path }}
+{% endif %}
+      {{ '{{' }}end{{ '}}' }}
