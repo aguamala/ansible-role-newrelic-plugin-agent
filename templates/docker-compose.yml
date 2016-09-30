@@ -12,6 +12,7 @@ services:
     extra_hosts:
      - "consul:{{ ansible_default_ipv4.address }}"
     volumes:
+     - /etc/localtime:/etc/localtime:ro
      - ./consul-template:/etc/consul-template
      - ./assemble:/opt/newrelic-plugin-agent/assemble
 
